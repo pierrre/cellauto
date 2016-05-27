@@ -75,14 +75,14 @@ func (g *Grid) Neighbors(p Point) [8]uint8 {
 	}
 	var res [8]uint8
 	for i, q := range [8]Point{
-		Point{-1, -1},
-		Point{0, -1},
-		Point{1, -1},
-		Point{1, 0},
-		Point{1, 1},
-		Point{0, 1},
-		Point{-1, 1},
-		Point{-1, 0},
+		{-1, -1},
+		{0, -1},
+		{1, -1},
+		{1, 0},
+		{1, 1},
+		{0, 1},
+		{-1, 1},
+		{-1, 0},
 	} {
 		p := p.Add(q)
 		if g.Contains(p) {
