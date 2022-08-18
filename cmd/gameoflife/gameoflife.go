@@ -6,7 +6,7 @@ import (
 	"github.com/pierrre/cellauto/wireworld"
 )
 
-// nolint: gocyclo // TODO: Fix this cyclomatic complexity.
+//nolint:gocyclo // TODO: Fix this cyclomatic complexity.
 func main() {
 	err := termbox.Init()
 	if err != nil {
