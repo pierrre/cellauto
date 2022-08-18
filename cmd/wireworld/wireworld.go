@@ -45,7 +45,7 @@ func newGame() *wireworld.Game {
 	}
 }
 
-//nolint: gocyclo // TODO: Fix this cyclomatic complexity.
+//nolint:gocyclo // TODO: Fix this cyclomatic complexity.
 func loadGrid() *cellauto.Grid {
 	b, err := os.ReadFile(argFile)
 	if err != nil {
