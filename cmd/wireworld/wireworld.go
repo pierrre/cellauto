@@ -124,7 +124,7 @@ func writeImage(g *cellauto.Grid, step int) {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = ioutil.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0o644)
 	if err != nil {
 		log.Panic(err)
 	}
