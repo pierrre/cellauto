@@ -8,7 +8,6 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -46,8 +45,9 @@ func newGame() *wireworld.Game {
 	}
 }
 
+//nolint: gocyclo // TODO: Fix this cyclomatic complexity.
 func loadGrid() *cellauto.Grid {
-	b, err := ioutil.ReadFile(argFile)
+	b, err := os.ReadFile(argFile)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -124,7 +124,7 @@ func writeImage(g *cellauto.Grid, step int) {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = ioutil.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0o644)
+	err = os.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0o644) //nolint: gosec // Allow all users to read the file.
 	if err != nil {
 		log.Panic(err)
 	}

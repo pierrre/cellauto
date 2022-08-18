@@ -9,11 +9,11 @@ import (
 func TestRuleGameOfLife(t *testing.T) {
 	g := cellauto.NewGrid(cellauto.Point{X: 3, Y: 3})
 	for _, p := range []cellauto.Point{
-		{0, 0},
-		{1, 0},
-		{2, 0},
-		{0, 1},
-		{1, 1},
+		{X: 0, Y: 0},
+		{X: 1, Y: 0},
+		{X: 2, Y: 0},
+		{X: 0, Y: 1},
+		{X: 1, Y: 1},
 	} {
 		g.Set(p, 1)
 	}

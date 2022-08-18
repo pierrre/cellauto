@@ -1,3 +1,4 @@
+// Package gameoflife implements the "Game Of Life" variant of the cellular automaton.
 package gameoflife
 
 import (

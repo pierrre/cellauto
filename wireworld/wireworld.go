@@ -1,3 +1,4 @@
+// Package wireworld implements the "Wireworld" variant of the cellular automaton.
 package wireworld
 
 import (
@@ -16,8 +17,11 @@ const (
 )
 
 // Rule is the Rule for the "Wireworld" variant.
+//
+//nolint:gocyclo // Cyclomatic complexity is too high.
 func Rule(p cellauto.Point, g *cellauto.Grid) uint8 {
 	v := g.Get(p)
+	//nolint:nestif // TODO fix nested if.
 	if v == StateConductor {
 		c := 0
 		n := g.Neighbors(p)
@@ -111,12 +115,12 @@ func parallel(ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
 		min := l * i / pr
 		max := l * (i + 1) / pr
 		if max > min {
-			ps := ps[min:max]
+			nps := ps[min:max]
 			wg.Add(1)
 			go func(ps []cellauto.Point) {
 				f(ps)
 				wg.Done()
-			}(ps)
+			}(nps)
 		}
 	}
 	wg.Wait()

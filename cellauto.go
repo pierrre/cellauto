@@ -84,9 +84,9 @@ func (g *Grid) Neighbors(p Point) [8]uint8 {
 		{-1, 1},
 		{-1, 0},
 	} {
-		p := p.Add(q)
-		if g.Contains(p) {
-			res[i] = g.Get(p)
+		np := p.Add(q)
+		if g.Contains(np) {
+			res[i] = g.Get(np)
 		}
 	}
 	return res

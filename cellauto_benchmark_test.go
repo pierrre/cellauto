@@ -38,6 +38,7 @@ func BenchmarkGameStepLarge(b *testing.B) {
 }
 
 func benchmarkGameStep(b *testing.B, g *Grid) {
+	b.Helper()
 	game := &Game{
 		Rule: func(p Point, g *Grid) uint8 {
 			return 0

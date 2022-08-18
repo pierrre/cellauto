@@ -6,6 +6,7 @@ import (
 	"github.com/pierrre/cellauto/wireworld"
 )
 
+// nolint: gocyclo // TODO: Fix this cyclomatic complexity.
 func main() {
 	err := termbox.Init()
 	if err != nil {
@@ -35,7 +36,7 @@ func main() {
 	for {
 		select {
 		case ev := <-evQueue:
-			switch ev.Type {
+			switch ev.Type { //nolint: exhaustive // We only need some events.
 			case termbox.EventKey:
 				return
 			}
