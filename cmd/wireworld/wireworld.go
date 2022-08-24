@@ -1,3 +1,4 @@
+// Package wireworld is a WireWorld application.
 package main
 
 import (

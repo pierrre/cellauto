@@ -1,3 +1,4 @@
+// Package gameoflife is a "Game of Life" application.
 package main
 
 import (
