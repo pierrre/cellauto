@@ -125,7 +125,7 @@ func writeImage(g *cellauto.Grid, step int) {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = os.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0o644) //nolint: gosec // Allow all users to read the file.
+	err = os.WriteFile(fmt.Sprintf("out_%010d.png", step), buf.Bytes(), 0o644) //nolint:gosec // Allow all users to read the file.
 	if err != nil {
 		log.Panic(err)
 	}

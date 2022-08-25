@@ -37,8 +37,7 @@ func main() {
 	for {
 		select {
 		case ev := <-evQueue:
-			switch ev.Type { //nolint: exhaustive // We only need some events.
-			case termbox.EventKey:
+			if ev.Type == termbox.EventKey {
 				return
 			}
 		default:
