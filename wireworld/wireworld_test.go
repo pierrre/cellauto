@@ -3,8 +3,14 @@ package wireworld
 import (
 	"testing"
 
+	"github.com/pierrre/assert"
 	"github.com/pierrre/cellauto"
+	"github.com/pierrre/cellauto/internal/cellautotest"
 )
+
+func init() {
+	cellautotest.Configure()
+}
 
 var testGrid *cellauto.Grid
 
@@ -49,8 +55,6 @@ func TestRuleWireworld(t *testing.T) {
 		},
 	} {
 		res := Rule(tc.point, testGrid)
-		if res != tc.expected {
-			t.Fatalf("unexpected result for %s: got %v, want %v", tc.point, res, tc.expected)
-		}
+		assert.Equal(t, res, tc.expected)
 	}
 }

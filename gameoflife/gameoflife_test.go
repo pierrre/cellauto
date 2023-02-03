@@ -3,8 +3,14 @@ package gameoflife
 import (
 	"testing"
 
+	"github.com/pierrre/assert"
 	"github.com/pierrre/cellauto"
+	"github.com/pierrre/cellauto/internal/cellautotest"
 )
+
+func init() {
+	cellautotest.Configure()
+}
 
 func TestRuleGameOfLife(t *testing.T) {
 	g := cellauto.NewGrid(cellauto.Point{X: 3, Y: 3})
@@ -60,8 +66,6 @@ func TestRuleGameOfLife(t *testing.T) {
 		},
 	} {
 		res := Rule(tc.point, g)
-		if res != tc.expected {
-			t.Fatalf("unexpected result for %s: got %v, want %v", tc.point, res, tc.expected)
-		}
+		assert.Equal(t, res, tc.expected)
 	}
 }
