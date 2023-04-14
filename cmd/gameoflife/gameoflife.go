@@ -5,6 +5,7 @@ import (
 	"github.com/nsf/termbox-go"
 	"github.com/pierrre/cellauto"
 	"github.com/pierrre/cellauto/wireworld"
+	"github.com/pierrre/go-libs/goroutine"
 )
 
 //nolint:gocyclo // TODO: Fix this cyclomatic complexity.
@@ -15,11 +16,12 @@ func main() {
 	}
 	defer termbox.Close()
 	evQueue := make(chan termbox.Event)
-	go func() {
+	wait := goroutine.GoWait(func() {
 		for {
 			evQueue <- termbox.PollEvent()
 		}
-	}()
+	})
+	defer wait()
 	width, height := termbox.Size()
 
 	game := &cellauto.Game{

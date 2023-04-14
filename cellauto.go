@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
+
+	"github.com/pierrre/go-libs/goroutine"
 )
 
 // Point is a point on a Grid.
@@ -131,11 +133,9 @@ func parallel(p Point, pr int, f func(min, max Point)) {
 		min := Point{0, p.Y * y / pr}
 		max := Point{p.X, p.Y * (y + 1) / pr}
 		if max.X > min.X && max.Y > min.Y {
-			wg.Add(1)
-			go func(min, max Point) {
+			goroutine.WaitGroup(wg, func() {
 				f(min, max)
-				wg.Done()
-			}(min, max)
+			})
 		}
 	}
 	wg.Wait()

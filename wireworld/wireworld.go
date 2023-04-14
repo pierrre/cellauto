@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/pierrre/cellauto"
+	"github.com/pierrre/go-libs/goroutine"
 )
 
 // All available states.
@@ -116,11 +117,9 @@ func parallel(ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
 		max := l * (i + 1) / pr
 		if max > min {
 			nps := ps[min:max]
-			wg.Add(1)
-			go func(ps []cellauto.Point) {
-				f(ps)
-				wg.Done()
-			}(nps)
+			goroutine.WaitGroup(wg, func() {
+				f(nps)
+			})
 		}
 	}
 	wg.Wait()
