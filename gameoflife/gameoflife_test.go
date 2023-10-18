@@ -5,12 +5,7 @@ import (
 
 	"github.com/pierrre/assert"
 	"github.com/pierrre/cellauto"
-	"github.com/pierrre/cellauto/internal/cellautotest"
 )
-
-func init() {
-	cellautotest.Configure()
-}
 
 func TestRuleGameOfLife(t *testing.T) {
 	g := cellauto.NewGrid(cellauto.Point{X: 3, Y: 3})

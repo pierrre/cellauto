@@ -4,12 +4,7 @@ import (
 	"testing"
 
 	"github.com/pierrre/assert"
-	"github.com/pierrre/cellauto/internal/cellautotest"
 )
-
-func init() {
-	cellautotest.Configure()
-}
 
 func TestPointAdd(t *testing.T) {
 	p1 := Point{1, 2}

@@ -5,12 +5,7 @@ import (
 
 	"github.com/pierrre/assert"
 	"github.com/pierrre/cellauto"
-	"github.com/pierrre/cellauto/internal/cellautotest"
 )
-
-func init() {
-	cellautotest.Configure()
-}
 
 var testGrid *cellauto.Grid
 
