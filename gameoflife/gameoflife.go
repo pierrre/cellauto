@@ -5,7 +5,7 @@ import (
 	"github.com/pierrre/cellauto"
 )
 
-// Rule is the Rule for the "Game Of Life" variant.
+// Rule is the [cellauto.Rule] for the "Game Of Life" variant.
 func Rule(p cellauto.Point, g *cellauto.Grid) uint8 {
 	a := 0
 	for _, v := range g.Neighbors(p) {

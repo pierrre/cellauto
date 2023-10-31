@@ -9,12 +9,12 @@ import (
 	"github.com/pierrre/go-libs/goroutine"
 )
 
-// Point is a point on a Grid.
+// Point is a point on a [Grid].
 type Point struct {
 	X, Y int
 }
 
-// Add adds a Point to another.
+// Add adds a [Point] to another.
 func (p Point) Add(q Point) Point {
 	return Point{p.X + q.X, p.Y + q.Y}
 }
@@ -31,7 +31,7 @@ type Grid struct {
 	Squares []uint8
 }
 
-// NewGrid creates a new Grid.
+// NewGrid creates a new [Grid].
 func NewGrid(size Point) *Grid {
 	return &Grid{
 		Size:    size,
@@ -39,27 +39,26 @@ func NewGrid(size Point) *Grid {
 	}
 }
 
-// SquareIndex return the internal index of a square.
 func (g *Grid) index(p Point) int {
 	return p.Y*g.Size.X + p.X
 }
 
-// Get returns the value of a square.
+// Get returns the value of a [Point].
 func (g *Grid) Get(p Point) uint8 {
 	return g.Squares[g.index(p)]
 }
 
-// Set sets the value of a square.
+// Set sets the value of a [Point].
 func (g *Grid) Set(p Point, v uint8) {
 	g.Squares[g.index(p)] = v
 }
 
-// Contains returns true if the Grid contains the Point, and false otherwise.
+// Contains returns true if the Grid contains the [Point], and false otherwise.
 func (g *Grid) Contains(p Point) bool {
 	return p.X >= 0 && p.Y >= 0 && p.X < g.Size.X && p.Y < g.Size.Y
 }
 
-// Neighbors returns the neighbors value of a Point.
+// Neighbors returns the neighbors value of a [Point].
 // Start from top-left, and go clockwise.
 // Out of bounds neighbors are equal to 0.
 func (g *Grid) Neighbors(p Point) [8]uint8 {
@@ -94,7 +93,7 @@ func (g *Grid) Neighbors(p Point) [8]uint8 {
 	return res
 }
 
-// Rule represents a rule applied to a Point on a Grid.
+// Rule represents a rule applied to a [Point] on a [Grid].
 type Rule func(p Point, g *Grid) uint8
 
 // Game is a cellular automaton game.
@@ -104,7 +103,7 @@ type Game struct {
 	tmpGrid *Grid
 }
 
-// Step runs the Game for 1 step.
+// Step runs the [Game] for 1 step.
 func (g *Game) Step() {
 	if g.tmpGrid == nil {
 		g.tmpGrid = NewGrid(g.Grid.Size)

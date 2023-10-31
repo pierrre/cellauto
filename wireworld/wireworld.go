@@ -17,7 +17,7 @@ const (
 	StateConductor
 )
 
-// Rule is the Rule for the "Wireworld" variant.
+// Rule is the [cellauto.Rule] for the "Wireworld" variant.
 //
 //nolint:gocyclo // Cyclomatic complexity is too high.
 func Rule(p cellauto.Point, g *cellauto.Grid) uint8 {
