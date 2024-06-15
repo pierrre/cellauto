@@ -2,6 +2,7 @@
 package cellauto
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"sync"
@@ -104,11 +105,11 @@ type Game struct {
 }
 
 // Step runs the [Game] for 1 step.
-func (g *Game) Step() {
+func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = NewGrid(g.Grid.Size)
 	}
-	parallelAuto(g.Grid.Size, g.step)
+	parallelAuto(ctx, g.Grid.Size, g.step)
 	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
 }
 
@@ -122,7 +123,7 @@ func (g *Game) step(min, max Point) {
 	}
 }
 
-func parallel(p Point, pr int, f func(min, max Point)) {
+func parallel(ctx context.Context, p Point, pr int, f func(min, max Point)) {
 	if pr == 1 {
 		f(Point{0, 0}, p)
 		return
@@ -132,7 +133,7 @@ func parallel(p Point, pr int, f func(min, max Point)) {
 		min := Point{0, p.Y * y / pr}
 		max := Point{p.X, p.Y * (y + 1) / pr}
 		if max.X > min.X && max.Y > min.Y {
-			goroutine.WaitGroup(wg, func() {
+			goroutine.WaitGroup(ctx, wg, func(context.Context) {
 				f(min, max)
 			})
 		}
@@ -140,6 +141,6 @@ func parallel(p Point, pr int, f func(min, max Point)) {
 	wg.Wait()
 }
 
-func parallelAuto(p Point, f func(min, max Point)) {
-	parallel(p, runtime.GOMAXPROCS(0), f)
+func parallelAuto(ctx context.Context, p Point, f func(min, max Point)) {
+	parallel(ctx, p, runtime.GOMAXPROCS(0), f)
 }

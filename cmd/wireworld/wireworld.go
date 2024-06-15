@@ -4,6 +4,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"flag"
 	"fmt"
 	"image"
@@ -17,9 +18,10 @@ import (
 )
 
 func main() {
+	ctx := context.Background()
 	parseFlags()
 	g := newGame()
-	run(g)
+	run(ctx, g)
 }
 
 var (
@@ -90,13 +92,13 @@ func loadGrid() *cellauto.Grid {
 	return g
 }
 
-func run(g *wireworld.Game) {
+func run(ctx context.Context, g *wireworld.Game) {
 	for step := 0; ; step++ {
 		if step%flagSteps == 0 {
 			log.Printf("step: %d", step)
 			writeImage(g.Grid, step)
 		}
-		g.Step()
+		g.Step(ctx)
 	}
 }
 

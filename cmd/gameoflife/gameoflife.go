@@ -2,6 +2,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/nsf/termbox-go"
 	"github.com/pierrre/cellauto"
 	"github.com/pierrre/cellauto/wireworld"
@@ -10,13 +12,14 @@ import (
 
 //nolint:gocyclo // TODO: Fix this cyclomatic complexity.
 func main() {
+	ctx := context.Background()
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
 	}
 	defer termbox.Close()
 	evQueue := make(chan termbox.Event)
-	goroutine.Go(func() {
+	goroutine.Go(ctx, func(context.Context) {
 		for {
 			evQueue <- termbox.PollEvent()
 		}
@@ -60,6 +63,6 @@ func main() {
 			panic(err)
 		}
 
-		game.Step()
+		game.Step(ctx)
 	}
 }

@@ -1,6 +1,7 @@
 package cellauto
 
 import (
+	"context"
 	"testing"
 )
 
@@ -39,6 +40,7 @@ func BenchmarkGameStepLarge(b *testing.B) {
 
 func benchmarkGameStep(b *testing.B, g *Grid) {
 	b.Helper()
+	ctx := context.Background()
 	game := &Game{
 		Rule: func(p Point, g *Grid) uint8 {
 			return 0
@@ -47,6 +49,6 @@ func benchmarkGameStep(b *testing.B, g *Grid) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		game.Step()
+		game.Step(ctx)
 	}
 }

@@ -2,6 +2,7 @@
 package wireworld
 
 import (
+	"context"
 	"runtime"
 	"sync"
 
@@ -75,14 +76,14 @@ type Game struct {
 }
 
 // Step runs 1 step.
-func (g *Game) Step() {
+func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = cellauto.NewGrid(g.Grid.Size)
 	}
 	if g.points == nil {
 		g.initPoints()
 	}
-	parallelAuto(g.points, g.step)
+	parallelAuto(ctx, g.points, g.step)
 	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
 }
 
@@ -105,7 +106,7 @@ func (g *Game) step(ps []cellauto.Point) {
 	}
 }
 
-func parallel(ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
+func parallel(ctx context.Context, ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
 	if pr == 1 {
 		f(ps)
 		return
@@ -113,11 +114,11 @@ func parallel(ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
 	l := len(ps)
 	wg := new(sync.WaitGroup)
 	for i := 0; i < pr; i++ {
-		min := l * i / pr
-		max := l * (i + 1) / pr
-		if max > min {
-			nps := ps[min:max]
-			goroutine.WaitGroup(wg, func() {
+		idxMin := l * i / pr
+		idxMax := l * (i + 1) / pr
+		if idxMax > idxMin {
+			nps := ps[idxMin:idxMax]
+			goroutine.WaitGroup(ctx, wg, func(context.Context) {
 				f(nps)
 			})
 		}
@@ -125,6 +126,6 @@ func parallel(ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
 	wg.Wait()
 }
 
-func parallelAuto(ps []cellauto.Point, f func(ps []cellauto.Point)) {
-	parallel(ps, runtime.GOMAXPROCS(0), f)
+func parallelAuto(ctx context.Context, ps []cellauto.Point, f func(ps []cellauto.Point)) {
+	parallel(ctx, ps, runtime.GOMAXPROCS(0), f)
 }
