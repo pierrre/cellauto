@@ -113,9 +113,9 @@ func (g *Game) Step(ctx context.Context) {
 	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
 }
 
-func (g *Game) step(min, max Point) {
-	for y := min.Y; y < max.Y; y++ {
-		for x := min.X; x < max.X; x++ {
+func (g *Game) step(minPoint, maxPoint Point) {
+	for y := minPoint.Y; y < maxPoint.Y; y++ {
+		for x := minPoint.X; x < maxPoint.X; x++ {
 			p := Point{x, y}
 			v := g.Rule(p, g.Grid)
 			g.tmpGrid.Set(p, v)
@@ -130,11 +130,11 @@ func parallel(ctx context.Context, p Point, pr int, f func(min, max Point)) {
 	}
 	wg := new(sync.WaitGroup)
 	for y := 0; y < pr; y++ {
-		min := Point{0, p.Y * y / pr}
-		max := Point{p.X, p.Y * (y + 1) / pr}
-		if max.X > min.X && max.Y > min.Y {
+		minPoint := Point{0, p.Y * y / pr}
+		maxPoint := Point{p.X, p.Y * (y + 1) / pr}
+		if maxPoint.X > minPoint.X && maxPoint.Y > minPoint.Y {
 			goroutine.WaitGroup(ctx, wg, func(context.Context) {
-				f(min, max)
+				f(minPoint, maxPoint)
 			})
 		}
 	}
