@@ -74,8 +74,8 @@ func TestGridContains(t *testing.T) {
 
 func TestGridNeighbors(t *testing.T) {
 	g := NewGrid(Point{3, 3})
-	for y := 0; y < g.Size.Y; y++ {
-		for x := 0; x < g.Size.X; x++ {
+	for y := range g.Size.Y {
+		for x := range g.Size.X {
 			g.Set(Point{x, y}, 1)
 		}
 	}
@@ -111,8 +111,8 @@ func TestGameStep(t *testing.T) {
 		Grid: NewGrid(Point{10, 10}),
 	}
 	g.Step(ctx)
-	for y := 0; y < g.Grid.Size.Y; y++ {
-		for x := 0; x < g.Grid.Size.X; x++ {
+	for y := range g.Grid.Size.Y {
+		for x := range g.Grid.Size.X {
 			p := Point{x, y}
 			v := g.Grid.Get(p)
 			assert.Equal(t, v, 1)

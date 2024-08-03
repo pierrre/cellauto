@@ -129,7 +129,7 @@ func parallel(ctx context.Context, p Point, pr int, f func(min, max Point)) {
 		return
 	}
 	wg := new(sync.WaitGroup)
-	for y := 0; y < pr; y++ {
+	for y := range pr {
 		minPoint := Point{0, p.Y * y / pr}
 		maxPoint := Point{p.X, p.Y * (y + 1) / pr}
 		if maxPoint.X > minPoint.X && maxPoint.Y > minPoint.Y {

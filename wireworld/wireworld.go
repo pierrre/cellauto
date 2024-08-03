@@ -89,8 +89,8 @@ func (g *Game) Step(ctx context.Context) {
 
 func (g *Game) initPoints() {
 	g.points = make([]cellauto.Point, 0)
-	for y := 0; y < g.Grid.Size.Y; y++ {
-		for x := 0; x < g.Grid.Size.X; x++ {
+	for y := range g.Grid.Size.Y {
+		for x := range g.Grid.Size.X {
 			p := cellauto.Point{X: x, Y: y}
 			if g.Grid.Get(p) != StateEmpty {
 				g.points = append(g.points, p)
@@ -113,7 +113,7 @@ func parallel(ctx context.Context, ps []cellauto.Point, pr int, f func(ps []cell
 	}
 	l := len(ps)
 	wg := new(sync.WaitGroup)
-	for i := 0; i < pr; i++ {
+	for i := range pr {
 		idxMin := l * i / pr
 		idxMax := l * (i + 1) / pr
 		if idxMax > idxMin {

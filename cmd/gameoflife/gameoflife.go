@@ -30,8 +30,8 @@ func main() {
 		Rule: wireworld.Rule,
 		Grid: cellauto.NewGrid(cellauto.Point{X: width, Y: height}),
 	}
-	for y := 0; y < game.Grid.Size.Y; y++ {
-		for x := 0; x < game.Grid.Size.X; x++ {
+	for y := range game.Grid.Size.Y {
+		for x := range game.Grid.Size.X {
 			if (x+y)%2 == 0 {
 				game.Grid.Set(cellauto.Point{X: x, Y: y}, 1)
 			}
@@ -47,8 +47,8 @@ func main() {
 		default:
 		}
 
-		for y := 0; y < game.Grid.Size.Y; y++ {
-			for x := 0; x < game.Grid.Size.X; x++ {
+		for y := range game.Grid.Size.Y {
+			for x := range game.Grid.Size.X {
 				var bg termbox.Attribute
 				if game.Grid.Get(cellauto.Point{X: x, Y: y}) > 0 {
 					bg = termbox.ColorRed

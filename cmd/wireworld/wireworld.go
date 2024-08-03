@@ -104,8 +104,8 @@ func run(ctx context.Context, g *wireworld.Game) {
 
 func writeImage(g *cellauto.Grid, step int) {
 	im := image.NewRGBA(image.Rect(0, 0, g.Size.X, g.Size.Y))
-	for y := 0; y < g.Size.Y; y++ {
-		for x := 0; x < g.Size.X; x++ {
+	for y := range g.Size.Y {
+		for x := range g.Size.X {
 			var c color.RGBA
 			switch g.Get(cellauto.Point{X: x, Y: y}) {
 			case wireworld.StateEmpty:
