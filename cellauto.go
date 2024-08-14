@@ -123,7 +123,7 @@ func (g *Game) step(minPoint, maxPoint Point) {
 	}
 }
 
-func parallel(ctx context.Context, p Point, pr int, f func(min, max Point)) {
+func parallel(ctx context.Context, p Point, pr int, f func(minPoint, maxPoint Point)) {
 	if pr == 1 {
 		f(Point{0, 0}, p)
 		return
@@ -141,6 +141,6 @@ func parallel(ctx context.Context, p Point, pr int, f func(min, max Point)) {
 	wg.Wait()
 }
 
-func parallelAuto(ctx context.Context, p Point, f func(min, max Point)) {
+func parallelAuto(ctx context.Context, p Point, f func(minPoint, maxPoint Point)) {
 	parallel(ctx, p, runtime.GOMAXPROCS(0), f)
 }
