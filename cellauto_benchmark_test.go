@@ -7,21 +7,21 @@ import (
 
 func BenchmarkGridNeighborsCenter(b *testing.B) {
 	g := NewGrid(Point{3, 3})
-	for range b.N {
+	for b.Loop() {
 		g.Neighbors(Point{1, 1})
 	}
 }
 
 func BenchmarkGridNeighborsBorder(b *testing.B) {
 	g := NewGrid(Point{3, 3})
-	for range b.N {
+	for b.Loop() {
 		g.Neighbors(Point{0, 1})
 	}
 }
 
 func BenchmarkGridNeighborsCorner(b *testing.B) {
 	g := NewGrid(Point{3, 3})
-	for range b.N {
+	for b.Loop() {
 		g.Neighbors(Point{0, 0})
 	}
 }
@@ -47,8 +47,7 @@ func benchmarkGameStep(b *testing.B, g *Grid) {
 		},
 		Grid: g,
 	}
-	b.ResetTimer()
-	for range b.N {
+	for b.Loop() {
 		game.Step(ctx)
 	}
 }
