@@ -1,7 +1,6 @@
 package cellauto
 
 import (
-	"context"
 	"testing"
 
 	"github.com/pierrre/assert"
@@ -103,7 +102,7 @@ func TestGridNeighbors(t *testing.T) {
 }
 
 func TestGameStep(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	g := &Game{
 		Rule: func(p Point, g *Grid) uint8 {
 			return 1
@@ -121,7 +120,7 @@ func TestGameStep(t *testing.T) {
 }
 
 func TestParallel(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	p := Point{10, 10}
 	f := func(minPoint, maxPoint Point) {}
 	parallelAuto(ctx, p, f)
