@@ -3,11 +3,8 @@ package wireworld
 
 import (
 	"context"
-	"runtime"
-	"sync"
 
 	"github.com/pierrre/cellauto"
-	"github.com/pierrre/go-libs/goroutine"
 )
 
 // All available states.
@@ -83,7 +80,7 @@ func (g *Game) Step(ctx context.Context) {
 	if g.points == nil {
 		g.initPoints()
 	}
-	parallelAuto(ctx, g.points, g.step)
+	g.step(g.points)
 	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
 }
 
@@ -104,28 +101,4 @@ func (g *Game) step(ps []cellauto.Point) {
 		v := Rule(p, g.Grid)
 		g.tmpGrid.Set(p, v)
 	}
-}
-
-func parallel(ctx context.Context, ps []cellauto.Point, pr int, f func(ps []cellauto.Point)) {
-	if pr == 1 {
-		f(ps)
-		return
-	}
-	l := len(ps)
-	wg := new(sync.WaitGroup)
-	for i := range pr {
-		idxMin := l * i / pr
-		idxMax := l * (i + 1) / pr
-		if idxMax > idxMin {
-			nps := ps[idxMin:idxMax]
-			goroutine.WaitGroup(ctx, wg, func(context.Context) {
-				f(nps)
-			})
-		}
-	}
-	wg.Wait()
-}
-
-func parallelAuto(ctx context.Context, ps []cellauto.Point, f func(ps []cellauto.Point)) {
-	parallel(ctx, ps, runtime.GOMAXPROCS(0), f)
 }

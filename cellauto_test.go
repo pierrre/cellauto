@@ -118,12 +118,3 @@ func TestGameStep(t *testing.T) {
 		}
 	}
 }
-
-func TestParallel(t *testing.T) {
-	ctx := t.Context()
-	p := Point{10, 10}
-	f := func(minPoint, maxPoint Point) {}
-	parallelAuto(ctx, p, f)
-	parallel(ctx, p, 1, f)
-	parallel(ctx, p, 2, f)
-}

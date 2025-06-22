@@ -4,10 +4,6 @@ package cellauto
 import (
 	"context"
 	"fmt"
-	"runtime"
-	"sync"
-
-	"github.com/pierrre/go-libs/goroutine"
 )
 
 // Point is a point on a [Grid].
@@ -109,7 +105,7 @@ func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = NewGrid(g.Grid.Size)
 	}
-	parallelAuto(ctx, g.Grid.Size, g.step)
+	g.step(Point{0, 0}, g.Grid.Size)
 	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
 }
 
@@ -121,26 +117,4 @@ func (g *Game) step(minPoint, maxPoint Point) {
 			g.tmpGrid.Set(p, v)
 		}
 	}
-}
-
-func parallel(ctx context.Context, p Point, pr int, f func(minPoint, maxPoint Point)) {
-	if pr == 1 {
-		f(Point{0, 0}, p)
-		return
-	}
-	wg := new(sync.WaitGroup)
-	for y := range pr {
-		minPoint := Point{0, p.Y * y / pr}
-		maxPoint := Point{p.X, p.Y * (y + 1) / pr}
-		if maxPoint.X > minPoint.X && maxPoint.Y > minPoint.Y {
-			goroutine.WaitGroup(ctx, wg, func(context.Context) {
-				f(minPoint, maxPoint)
-			})
-		}
-	}
-	wg.Wait()
-}
-
-func parallelAuto(ctx context.Context, p Point, f func(minPoint, maxPoint Point)) {
-	parallel(ctx, p, runtime.GOMAXPROCS(0), f)
 }
