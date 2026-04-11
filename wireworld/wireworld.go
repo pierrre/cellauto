@@ -65,14 +65,14 @@ func Rule(p cellauto.Point, g *cellauto.Grid) uint8 {
 	return StateEmpty
 }
 
-// Game is specialized in Wireword.
+// Game is specialized for Wireworld.
 type Game struct {
 	Grid    *cellauto.Grid
 	tmpGrid *cellauto.Grid
 	points  []cellauto.Point
 }
 
-// Step runs 1 step.
+// Step runs one step.
 func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = cellauto.NewGrid(g.Grid.Size)

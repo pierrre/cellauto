@@ -1,11 +1,11 @@
-// Package gameoflife implements the "Game Of Life" variant of the cellular automaton.
+// Package gameoflife implements the "Game of Life" variant of the cellular automaton.
 package gameoflife
 
 import (
 	"github.com/pierrre/cellauto"
 )
 
-// Rule is the [cellauto.Rule] for the "Game Of Life" variant.
+// Rule is the [cellauto.Rule] for the "Game of Life" variant.
 func Rule(p cellauto.Point, g *cellauto.Grid) uint8 {
 	a := 0
 	for _, v := range g.Neighbors(p) {

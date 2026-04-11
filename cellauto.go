@@ -1,4 +1,4 @@
-// Package cellauto provide a cellular automaton implementation.
+// Package cellauto provides a cellular automaton implementation.
 package cellauto
 
 import (
@@ -55,9 +55,9 @@ func (g *Grid) Contains(p Point) bool {
 	return p.X >= 0 && p.Y >= 0 && p.X < g.Size.X && p.Y < g.Size.Y
 }
 
-// Neighbors returns the neighbors value of a [Point].
-// Start from top-left, and go clockwise.
-// Out of bounds neighbors are equal to 0.
+// Neighbors returns the neighbor values of a [Point].
+// It starts from top-left and goes clockwise.
+// Out-of-bounds neighbors are equal to 0.
 func (g *Grid) Neighbors(p Point) [8]uint8 {
 	if p.X > 0 && p.X < g.Size.X-1 && p.Y > 0 && p.Y < g.Size.Y-1 {
 		return [8]uint8{
@@ -100,7 +100,7 @@ type Game struct {
 	tmpGrid *Grid
 }
 
-// Step runs the [Game] for 1 step.
+// Step runs the [Game] for one step.
 func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = NewGrid(g.Grid.Size)
