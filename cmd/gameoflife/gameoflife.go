@@ -3,6 +3,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/nsf/termbox-go"
 	"github.com/pierrre/cellauto"
@@ -64,5 +65,6 @@ func main() {
 		}
 
 		game.Step(ctx)
+		time.Sleep(time.Second / 30)
 	}
 }
