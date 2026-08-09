@@ -6,7 +6,7 @@ import (
 
 	"github.com/nsf/termbox-go"
 	"github.com/pierrre/cellauto"
-	"github.com/pierrre/cellauto/wireworld"
+	"github.com/pierrre/cellauto/gameoflife"
 	"github.com/pierrre/go-libs/goroutine"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	width, height := termbox.Size()
 
 	game := &cellauto.Game{
-		Rule: wireworld.Rule,
+		Rule: gameoflife.Rule,
 		Grid: cellauto.NewGrid(cellauto.Point{X: width, Y: height}),
 	}
 	for y := range game.Grid.Size.Y {
