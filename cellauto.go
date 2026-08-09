@@ -101,20 +101,28 @@ type Game struct {
 }
 
 // Step runs the [Game] for one step.
+// It returns early if the context is cancelled, without swapping the grids.
 func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = NewGrid(g.Grid.Size)
 	}
-	g.step(Point{0, 0}, g.Grid.Size)
-	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
+	if g.step(ctx, Point{0, 0}, g.Grid.Size) {
+		g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
+	}
 }
 
-func (g *Game) step(minPoint, maxPoint Point) {
+func (g *Game) step(ctx context.Context, minPoint, maxPoint Point) bool {
 	for y := minPoint.Y; y < maxPoint.Y; y++ {
+		select {
+		case <-ctx.Done():
+			return false
+		default:
+		}
 		for x := minPoint.X; x < maxPoint.X; x++ {
 			p := Point{x, y}
 			v := g.Rule(p, g.Grid)
 			g.tmpGrid.Set(p, v)
 		}
 	}
+	return true
 }

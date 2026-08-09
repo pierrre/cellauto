@@ -1,6 +1,7 @@
 package cellauto
 
 import (
+	"context"
 	"testing"
 
 	"github.com/pierrre/assert"
@@ -117,4 +118,18 @@ func TestGameStep(t *testing.T) {
 			assert.Equal(t, v, 1)
 		}
 	}
+}
+
+func TestGameStepCancelled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	g := &Game{
+		Rule: func(p Point, g *Grid) uint8 {
+			return 1
+		},
+		Grid: NewGrid(Point{10, 10}),
+	}
+	g.Grid.Set(Point{0, 0}, 2)
+	g.Step(ctx)
+	assert.Equal(t, g.Grid.Get(Point{0, 0}), 2)
 }

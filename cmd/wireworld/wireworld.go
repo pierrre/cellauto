@@ -12,13 +12,16 @@ import (
 	"image/png"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/pierrre/cellauto"
 	"github.com/pierrre/cellauto/wireworld"
 )
 
 func main() {
-	ctx := context.Background()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 	parseFlags()
 	g := newGame()
 	run(ctx, g)
@@ -94,6 +97,11 @@ func loadGrid() *cellauto.Grid {
 
 func run(ctx context.Context, g *wireworld.Game) {
 	for step := 0; ; step++ {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+		}
 		if step%flagSteps == 0 {
 			log.Printf("step: %d", step)
 			writeImage(g.Grid, step)

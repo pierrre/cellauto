@@ -1,6 +1,7 @@
 package wireworld
 
 import (
+	"context"
 	"testing"
 
 	"github.com/pierrre/assert"
@@ -52,4 +53,35 @@ func TestRuleWireworld(t *testing.T) {
 		res := Rule(tc.point, testGrid)
 		assert.Equal(t, res, tc.expected)
 	}
+}
+
+func TestGameStep(t *testing.T) {
+	ctx := t.Context()
+	g := &Game{
+		Grid: cellauto.NewGrid(cellauto.Point{X: 6, Y: 3}),
+	}
+	g.Grid.Set(cellauto.Point{X: 1, Y: 1}, StateConductor)
+	g.Grid.Set(cellauto.Point{X: 2, Y: 1}, StateHead)
+	g.Grid.Set(cellauto.Point{X: 3, Y: 1}, StateTail)
+	g.Grid.Set(cellauto.Point{X: 4, Y: 1}, StateConductor)
+	g.Grid.Set(cellauto.Point{X: 5, Y: 2}, 255)
+	g.Step(ctx)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 1, Y: 1}), StateHead)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 2, Y: 1}), StateTail)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 3, Y: 1}), StateConductor)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 4, Y: 1}), StateConductor)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 5, Y: 2}), StateEmpty)
+}
+
+func TestGameStepCancelled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	g := &Game{
+		Grid: cellauto.NewGrid(cellauto.Point{X: 6, Y: 3}),
+	}
+	g.Grid.Set(cellauto.Point{X: 1, Y: 1}, StateConductor)
+	g.Grid.Set(cellauto.Point{X: 2, Y: 1}, StateHead)
+	g.Step(ctx)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 1, Y: 1}), StateConductor)
+	assert.Equal(t, g.Grid.Get(cellauto.Point{X: 2, Y: 1}), StateHead)
 }

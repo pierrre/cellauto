@@ -73,6 +73,7 @@ type Game struct {
 }
 
 // Step runs one step.
+// It returns early if the context is cancelled, without swapping the grids.
 func (g *Game) Step(ctx context.Context) {
 	if g.tmpGrid == nil {
 		g.tmpGrid = cellauto.NewGrid(g.Grid.Size)
@@ -80,8 +81,9 @@ func (g *Game) Step(ctx context.Context) {
 	if g.points == nil {
 		g.initPoints()
 	}
-	g.step(g.points)
-	g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
+	if g.step(ctx, g.points) {
+		g.Grid, g.tmpGrid = g.tmpGrid, g.Grid
+	}
 }
 
 func (g *Game) initPoints() {
@@ -96,9 +98,15 @@ func (g *Game) initPoints() {
 	}
 }
 
-func (g *Game) step(ps []cellauto.Point) {
+func (g *Game) step(ctx context.Context, ps []cellauto.Point) bool {
 	for _, p := range ps {
+		select {
+		case <-ctx.Done():
+			return false
+		default:
+		}
 		v := Rule(p, g.Grid)
 		g.tmpGrid.Set(p, v)
 	}
+	return true
 }
